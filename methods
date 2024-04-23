@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js Authentication App</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="app">
+        <div v-if="!user">
+            <h2>Registro</h2>
+            <input type="text" v-model="username" placeholder="Nombre de usuario"><br>
+            <input type="email" v-model="email" placeholder="Correo electrónico"><br>
+            <input type="password" v-model="password" placeholder="Contraseña"><br>
+            <button @click="register">Registrarse</button>
+            <hr>
+            <h2>Iniciar sesión</h2>
+            <input type="text" v-model="loginUsername" placeholder="Nombre de usuario"><br>
+            <input type="password" v-model="loginPassword" placeholder="Contraseña"><br>
+            <button @click="login">Iniciar sesión</button>
+        </div>
+        <div v-else>
+            <h2>Bienvenido, {{ user }}</h2>
+            <button @click="changePassword">Cambiar contraseña</button>
+            <button @click="logout">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                username: '',
+                email: '',
+                password: '',
+                loginUsername: '',
+                loginPassword: '',
+                user: null
+            },
+            methods: {
+                register() {
+                    // Aquí iría la lógica para registrar al usuario
+                    console.log('Registrarse:', this.username, this.email, this.password);
+                },
+                login() {
+                    // Aquí iría la lógica para iniciar sesión
+                    console.log('Iniciar sesión:', this.loginUsername, this.loginPassword);
+                    this.user = this.loginUsername; // Solo para propósitos de demostración
+                },
+                changePassword() {
+                    // Aquí iría la lógica para cambiar la contraseña
+                    console.log('Cambiando contraseña');
+                },
+                logout() {
+                    // Aquí iría la lógica para cerrar sesión
+                    console.log('Cerrar sesión');
+                    this.user = null;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
