@@ -21,7 +21,7 @@
             <button @click="login">Iniciar sesión</button>
         </div>
         <div v-else>
-            <h2>Bienvenido, {{ user }}</h2>
+            <h2>Bienvenido, {{ user.username }}</h2>
             <button @click="changePassword">Cambiar contraseña</button>
             <button @click="logout">Cerrar sesión</button>
         </div>
@@ -36,25 +36,43 @@
                 password: '',
                 loginUsername: '',
                 loginPassword: '',
-                user: null
+                user: JSON.parse(localStorage.getItem('user')) // Intenta cargar el usuario desde localStorage
             },
             methods: {
                 register() {
                     // Aquí iría la lógica para registrar al usuario
-                    console.log('Registrarse:', this.username, this.email, this.password);
+                    const newUser = {
+                        username: this.username,
+                        email: this.email,
+                        password: this.password
+                    };
+                    // Simplemente almacenamos el usuario en localStorage (esto no es seguro para un entorno real)
+                    localStorage.setItem('user', JSON.stringify(newUser));
+                    this.user = newUser;
                 },
                 login() {
                     // Aquí iría la lógica para iniciar sesión
                     console.log('Iniciar sesión:', this.loginUsername, this.loginPassword);
-                    this.user = this.loginUsername; // Solo para propósitos de demostración
+                    // Por simplicidad, solo comprobamos si las credenciales coinciden con el usuario registrado
+                    const storedUser = JSON.parse(localStorage.getItem('user'));
+                    if (storedUser && storedUser.username === this.loginUsername && storedUser.password === this.loginPassword) {
+                        this.user = storedUser;
+                    } else {
+                        alert('Nombre de usuario o contraseña incorrectos');
+                    }
                 },
                 changePassword() {
                     // Aquí iría la lógica para cambiar la contraseña
                     console.log('Cambiando contraseña');
+                    // Por simplicidad, simplemente actualizamos la contraseña en localStorage
+                    const storedUser = JSON.parse(localStorage.getItem('user'));
+                    storedUser.password = prompt('Introduce la nueva contraseña');
+                    localStorage.setItem('user', JSON.stringify(storedUser));
                 },
                 logout() {
                     // Aquí iría la lógica para cerrar sesión
                     console.log('Cerrar sesión');
+                    localStorage.removeItem('user');
                     this.user = null;
                 }
             }
