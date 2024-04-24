@@ -22,8 +22,14 @@
         </div>
         <div v-else>
             <h2>Bienvenido, {{ user.username }}</h2>
-            <button @click="changePassword">Cambiar contraseña</button>
+            <button @click="showChangePasswordForm">Cambiar contraseña</button>
             <button @click="logout">Cerrar sesión</button>
+
+            <!-- Formulario para cambiar contraseña -->
+            <div v-if="showPasswordForm">
+                <input type="password" v-model="newPassword" placeholder="Nueva contraseña"><br>
+                <button @click="changePassword">Guardar</button>
+            </div>
         </div>
     </div>
 
@@ -36,7 +42,9 @@
                 password: '',
                 loginUsername: '',
                 loginPassword: '',
-                user: JSON.parse(localStorage.getItem('user')) // Intenta cargar el usuario desde localStorage
+                user: JSON.parse(localStorage.getItem('user')), // Intenta cargar el usuario desde localStorage
+                showPasswordForm: false,
+                newPassword: ''
             },
             methods: {
                 register() {
@@ -61,13 +69,17 @@
                         alert('Nombre de usuario o contraseña incorrectos');
                     }
                 },
+                showChangePasswordForm() {
+                    this.showPasswordForm = true;
+                },
                 changePassword() {
                     // Aquí iría la lógica para cambiar la contraseña
                     console.log('Cambiando contraseña');
                     // Por simplicidad, simplemente actualizamos la contraseña en localStorage
-                    const storedUser = JSON.parse(localStorage.getItem('user'));
-                    storedUser.password = prompt('Introduce la nueva contraseña');
-                    localStorage.setItem('user', JSON.stringify(storedUser));
+                    this.user.password = this.newPassword;
+                    localStorage.setItem('user', JSON.stringify(this.user));
+                    this.newPassword = ''; // Limpiar el campo de nueva contraseña
+                    this.showPasswordForm = false; // Ocultar el formulario
                 },
                 logout() {
                     // Aquí iría la lógica para cerrar sesión
@@ -80,3 +92,4 @@
     </script>
 </body>
 </html>
+
